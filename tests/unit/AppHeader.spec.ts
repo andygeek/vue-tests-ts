@@ -9,11 +9,12 @@ describe('AppHeader', () => {
     expect(wrapper.find('button').isVisible()).toBe(false)
   })
 
-  test('If user is no logged in, do not show logout button', () => {
+  test('If user is no logged in, do not show logout button', async () => {
     const wrapper = mount(AppHeader)
-    // Esto falla porque con mount ya renderizamos el DOM, y luego realizamos el cambio
-    // Pero estas llamadas no son asincronas, por lo que hay un tiempo hasta que el boton sea visible
     wrapper.setData({ loggedIn: true })
+
+    // Colocamos esto para poder esperar a la actualización del virtualDom
+    await wrapper.vm.$nextTick()
     expect(wrapper.find('button').isVisible()).toBe(true)
   })
 })
